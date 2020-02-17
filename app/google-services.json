@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "943766716469",
+    "firebase_url": "https://tremily-d55a6.firebaseio.com",
+    "project_id": "tremily-d55a6",
+    "storage_bucket": "tremily-d55a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943766716469:android:a7a37c23ce611c8fd3b17c",
+        "android_client_info": {
+          "package_name": "com.example.demo01"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "943766716469-6qusojih39g2o4qc5vtd6mc2kgtv3oi1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7lCYKEcQv9Arq33O8s5cC_qmLaifNu9E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "943766716469-6qusojih39g2o4qc5vtd6mc2kgtv3oi1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Tremily</string>
+    <string name="title_activity_tomar_foto">tomarFoto</string>
+    <string-array name="puntos_item">
+        <item>100</item>
+        <item>200</item>
+        <item>500</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>5000</item>
+        <item>10000</item>
+    </string-array>
+    <string-array name="prioridad_item">
+        <item>BAJA</item>
+        <item>MEDIA</item>
+        <item>ALTA</item>
+        <item>MUY ALTA</item>
+    </string-array>
+    <string-array name="puntosRecompansa_item">
+        <item>10000</item>
+        <item>20000</item>
+        <item>50000</item>
+        <item>100000</item>
+        <item>200000</item>
+        <item>500000</item>
+        <item>1000000</item>
+        <item>2000000</item>
+    </string-array>
+</resources>
