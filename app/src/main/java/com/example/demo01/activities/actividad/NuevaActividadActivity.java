@@ -514,8 +514,9 @@ public class NuevaActividadActivity extends AppCompatActivity implements PuntosD
     public void onPositiveButtonClicked(String[] list, int position) {
         final String select = list[position];
         if(list.length == 4){
+            prioridad = select;
             mprioridad.setText(select);
-        } else {
+        } else if(list.length == 7) {
             puntos = Integer.parseInt(select);
             mpuntos.setText(select + " puntos");
         }

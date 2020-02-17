@@ -12,16 +12,18 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.demo01.R;
 
+import java.util.Objects;
+
 public class PrioridadDialogFragment extends DialogFragment {
 
-    int position = 0;
+    private int position = 0;
 
     public interface PrioridadListener{
         void onPositiveButtonClicked(String[] list, int position);
         void onNegativeButtonClicked();
     }
 
-    PrioridadDialogFragment.PrioridadListener mListener;
+    private PrioridadDialogFragment.PrioridadListener mListener;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -33,7 +35,7 @@ public class PrioridadDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder prioridad = new AlertDialog.Builder(getActivity());
-        final String[] list = getActivity().getResources().getStringArray(R.array.prioridad_item);
+        final String[] list = Objects.requireNonNull(getActivity()).getResources().getStringArray(R.array.prioridad_item);
 
         prioridad.setTitle("Selecciona el prioridad")
                 .setSingleChoiceItems(list, position, new DialogInterface.OnClickListener() {

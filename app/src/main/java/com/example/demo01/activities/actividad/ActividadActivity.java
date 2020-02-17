@@ -2,6 +2,7 @@ package com.example.demo01.activities.actividad;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,8 +19,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.demo01.activities.dialog.CargandoDialogFragment;
+import com.example.demo01.activities.dialog.OpcioneDialogFragment;
 import com.example.demo01.activities.models.Actividad;
 import com.example.demo01.R;
 import com.example.demo01.activities.familia.FamiliaActivity;
@@ -30,6 +34,7 @@ import com.example.demo01.activities.recompensa.RecompensaActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,23 +50,26 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ActividadActivity extends AppCompatActivity {
+public class ActividadActivity extends AppCompatActivity implements OpcioneDialogFragment.OpcioneListener{
 
      Button mbtnCrearActividad, mbtnActividadesCreadas, mbtnRecompensas;
      ImageButton mbtnFamilia, mbtnPerfil, mbtnActividad;
      RecyclerView rv;
-
      ArrayList<Actividad> actividades;
 
-    FirebaseAuth mAuth;
-    FirebaseUser user;
-    FirebaseFirestore db;
-    FirebaseStorage storage;
-    StorageReference storageRef;
+     FirebaseAuth mAuth;
+     FirebaseUser user;
+     FirebaseFirestore db;
+     FirebaseStorage storage;
+     StorageReference storageRef;
 
     FirestoreRecyclerAdapter actividadAdapter;
+    CargandoDialogFragment cargandoDialogFragment;
+    FirestoreRecyclerOptions<Actividad> actividadOptionsDestino;
 
     final static String TAG = "ActividadActivity";
+    String dialogOpciones = "";
+    String idActividad = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +81,9 @@ public class ActividadActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
+
+        cargandoDialogFragment = new CargandoDialogFragment(ActividadActivity.this);
+        cargandoDialogFragment.startLoadingDialog();
 
         mbtnCrearActividad = findViewById(R. id.btnCrearActivdad);
         mbtnActividadesCreadas = findViewById(R.id.btnActividadesCreadas);
@@ -106,6 +117,7 @@ public class ActividadActivity extends AppCompatActivity {
                             mbtnCrearActividad.setVisibility(View.VISIBLE);
                             mbtnActividadesCreadas.setVisibility(View.VISIBLE);
                             mbtnRecompensas.setVisibility(View.VISIBLE);
+                            cargandoDialogFragment.dismissDialog();
                         }
                     }
                 } else {
@@ -125,7 +137,7 @@ public class ActividadActivity extends AppCompatActivity {
         CollectionReference actividadRef = db.collection("actividad");
         Query queryDestino = actividadRef.whereEqualTo("idDestino",uid);
 
-        final FirestoreRecyclerOptions<Actividad> actividadOptionsDestino = new FirestoreRecyclerOptions.Builder<Actividad>()
+        actividadOptionsDestino = new FirestoreRecyclerOptions.Builder<Actividad>()
                 .setQuery(queryDestino, Actividad.class)
                 .build();
 
@@ -154,7 +166,7 @@ public class ActividadActivity extends AppCompatActivity {
                     }
                 });
 
-                actividadViewHolder.imagen_item.setOnClickListener(new View.OnClickListener() {
+                actividadViewHolder.mvActividad.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Bundle args = new Bundle();
@@ -207,10 +219,21 @@ public class ActividadActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onPositiveButtonClicked(String string, int position) {
+        dialogOpciones = string;
+    }
+
+    @Override
+    public void onNegativeButtonClicked() {
+
+    }
+
     private class ActividadViewHolder extends RecyclerView.ViewHolder{
 
         private TextView nombre_item, descripcion_item, estado_item, puntos_item;
         private ImageView imagen_item;
+        private View mvActividad;
         //private Button unirse_item;
 
         ActividadViewHolder(@NonNull final View itemView) {
@@ -221,6 +244,7 @@ public class ActividadActivity extends AppCompatActivity {
             descripcion_item = itemView.findViewById(R.id.txtDescripcion);
             estado_item = itemView.findViewById(R.id.txtPrioridad);
             puntos_item = itemView.findViewById(R.id.txtPuntosRecompaensa);
+            mvActividad = itemView.findViewById(R.id.vActividad);
 
         }
 

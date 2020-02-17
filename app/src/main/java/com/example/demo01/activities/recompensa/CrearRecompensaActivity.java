@@ -257,21 +257,31 @@ public class CrearRecompensaActivity extends AppCompatActivity implements Puntos
                 data.put("idGrupo",mgrupoFamiliar.getText().toString());
                 data.put("puntosNecesarios",puntos);
 
-                recompensaRef.set(data)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("", "DocumentSnapshot successfully written!");
-                        cargandoDialogFragment.dismissDialog();
-                    }
-                })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("", "Error writing document", e);
-                                cargandoDialogFragment.dismissDialog();
-                            }
-                        });
+                if(mnombreRecompensa.getText().toString().isEmpty() &&
+                        mpuntosNecesarios.getText().toString().isEmpty() &&
+                        mfechaReclamo.getText().toString().isEmpty() &&
+                        mgrupoFamiliar.getText().toString().isEmpty() &&
+                        mmiembro.getText().toString().isEmpty()){
+                    recompensaRef.set(data)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d("", "DocumentSnapshot successfully written!");
+                                    cargandoDialogFragment.dismissDialog();
+                                    startActivity(new Intent(CrearRecompensaActivity.this, RecompensaActivity.class));
+                                    finish();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w("", "Error writing document", e);
+                                    cargandoDialogFragment.dismissDialog();
+                                }
+                            });
+                } else {
+                    Toast.makeText(CrearRecompensaActivity.this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

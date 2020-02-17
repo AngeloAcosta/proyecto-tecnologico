@@ -5,42 +5,52 @@
     android:id="@+id/clRecompesaItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ECCDCD"
+    android:background="#00ECCDCD"
     android:orientation="vertical">
 
 
-    <TextView
-        android:id="@+id/txtNombrereclamo"
+    <View
+        android:id="@+id/view"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="NOMBRE DE LA RECOMPENSA"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:background="#1A000000"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/txtNombrereclamo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="NOMBRE DE LA RECOMPENSA"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="5dp"
         android:text="PUNTOS NECESARIOS:"
         app:layout_constraintBottom_toBottomOf="@+id/txtPuntosRecompaensa"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toTopOf="@+id/txtPuntosRecompaensa" />
 
     <TextView
         android:id="@+id/txtPuntosRecompaensa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="2dp"
         android:text="1000"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/btnReclamar"
-        app:layout_constraintEnd_toStartOf="@+id/btnReclamar"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toTopOf="@+id/btnReclamar" />
 
@@ -49,9 +59,11 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="2dp"
         android:text="RECLAMAR"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintStart_toEndOf="@+id/txtPuntosRecompaensa"
         app:layout_constraintTop_toBottomOf="@+id/txtNombrereclamo" />
 
@@ -59,10 +71,10 @@
         android:id="@+id/textView24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="5dp"
         android:text="FECHA DE RECLAMO:"
         app:layout_constraintBottom_toBottomOf="@+id/txtFechaReclamo"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toTopOf="@+id/txtFechaReclamo" />
 
     <TextView
@@ -70,6 +82,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="2dp"
         android:text="FNAVIDAD"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="18sp"
