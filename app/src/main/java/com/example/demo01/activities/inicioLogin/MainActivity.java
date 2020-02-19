@@ -26,7 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class MainActivity extends AppCompatActivity {
 
      EditText mtxtEmail, mtxtClave;
-     TextView mtxtRecuperar, mtxtRegistrar;
+     TextView mtxtRegistrar;
      Button mbtnIngresar;
 
      String email = "";
@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
         mtxtEmail = (EditText) findViewById(R. id.txtEmail);
         mtxtClave = (EditText) findViewById(R. id.txtClave);
-        mtxtRecuperar = (TextView) findViewById(R. id.txtRecuperar);
 
         mbtnIngresar = (Button) findViewById(R. id.btnIngresar);
         mtxtRegistrar = (TextView) findViewById(R. id.txtRegistrar);
@@ -93,13 +92,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mtxtRecuperar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, RecuperarCuentaActivity.class);
-                startActivity(i);
-            }
-        });
     }
 
     private void alInicio(){

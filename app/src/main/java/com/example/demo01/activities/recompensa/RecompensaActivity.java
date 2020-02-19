@@ -23,21 +23,15 @@ import com.example.demo01.activities.models.Recompensa;
 import com.example.demo01.activities.models.Usuario;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -94,6 +88,19 @@ public class RecompensaActivity extends AppCompatActivity {
 
         mbtnVolver = findViewById(R.id.btnVolver);
 
+        mbtnReclamos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle args = new Bundle();
+
+                Intent intent = new Intent(RecompensaActivity.this, ReclamosActivity.class);
+
+                args.putSerializable("familia", familia);
+                intent.putExtras(args);
+                startActivity(intent);
+            }
+        });
+
         final String uid = user.getUid();
 
         DocumentReference docRef = db.collection("usuario").document(uid);
@@ -116,7 +123,7 @@ public class RecompensaActivity extends AppCompatActivity {
             }
         });
 
-        rv = findViewById(R. id.rvRecompensa);
+        rv = findViewById(R. id.rvReclamos);
         rv.setLayoutManager(new LinearLayoutManager(RecompensaActivity.this));
 
         recompensas = new ArrayList<>();
