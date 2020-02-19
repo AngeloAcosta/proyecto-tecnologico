@@ -39,9 +39,11 @@
 
     <Button
         android:id="@+id/btnActividadesCreadas"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="202dp"
+        android:layout_height="48dp"
+        android:background="@drawable/third_button"
         android:text="ACTIVIDADES CREADAS"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="parent" />
@@ -142,10 +144,12 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/btnHistorial"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/btnRecompensas"
+        android:layout_width="203dp"
+        android:layout_height="48dp"
+        android:background="@drawable/third_button"
         android:text="recompensas"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline4" />

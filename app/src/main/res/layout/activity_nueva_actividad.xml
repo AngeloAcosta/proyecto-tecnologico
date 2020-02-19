@@ -77,8 +77,9 @@
 
     <Button
         android:id="@+id/btnCancelar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="457dp"
+        android:layout_height="60dp"
+        android:background="@drawable/secundary_button"
         android:text="CANCELAR"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

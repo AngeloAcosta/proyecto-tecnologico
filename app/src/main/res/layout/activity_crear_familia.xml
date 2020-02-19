@@ -119,7 +119,7 @@
         android:id="@+id/btnCancelar"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:background="@drawable/primary_button"
+        android:background="@drawable/secundary_button"
         android:fontFamily="serif"
         android:text="CANCELAR"
         app:layout_constraintBottom_toBottomOf="parent"
