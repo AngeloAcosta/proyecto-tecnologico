@@ -13,6 +13,7 @@
         android:id="@+id/txtNombrereclamo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="serif"
         android:text="NOMBRE DE LA RECOMPENSA"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -25,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:fontFamily="serif"
         android:text="PUNTOS NECESARIOS:"
         app:layout_constraintBottom_toBottomOf="@+id/txtPuntosRecompaensa"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="serif"
         android:text="1000"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="18sp"
@@ -47,8 +50,10 @@
     <Button
         android:id="@+id/btnReclamar"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="197dp"
+        android:layout_height="40dp"
+        android:background="@drawable/primary_button"
+        android:fontFamily="serif"
         android:text="RECLAMAR"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:fontFamily="serif"
         android:text="FECHA DE RECLAMO:"
         app:layout_constraintBottom_toBottomOf="@+id/txtFechaReclamo"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,5 +81,6 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView24"
-        app:layout_constraintTop_toBottomOf="@+id/btnReclamar" />
+        app:layout_constraintTop_toBottomOf="@+id/btnReclamar"
+        android:fontFamily="serif" />
 </androidx.constraintlayout.widget.ConstraintLayout>

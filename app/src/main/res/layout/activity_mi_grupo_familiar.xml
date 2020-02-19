@@ -11,23 +11,11 @@
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:adjustViewBounds="false"
-        android:scaleType="centerCrop"
+        android:background="@drawable/banner_newfamily"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/backgrounds/scenic" />
-
-    <TextView
-        android:id="@+id/txtNombreFamilia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NOMBRE DE LA FAMILIA"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imgFamilia"
-        app:layout_constraintEnd_toEndOf="@+id/imgFamilia"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imgFamilia" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView11"
@@ -35,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="serif"
         android:text="INTEGRANTES"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDescripcion" />
@@ -52,8 +41,9 @@
 
     <Button
         android:id="@+id/btnVolver"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="394dp"
+        android:layout_height="45dp"
+        android:background="@drawable/secundary_button"
         android:text="VOLVER"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,6 +56,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="serif"
         android:text="DESCRIPCION"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintEnd_toEndOf="parent"

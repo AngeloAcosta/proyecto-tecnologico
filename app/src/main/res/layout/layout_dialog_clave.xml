@@ -10,6 +10,7 @@
         android:id="@+id/txtClaveUnirme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:drawableRight="@drawable/ptext_password"
         android:ems="10"
         android:hint="INGRESA LA CLAVE"
         android:inputType="numberPassword"

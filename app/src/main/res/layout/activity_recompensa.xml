@@ -8,17 +8,32 @@
 
     <Button
         android:id="@+id/btnVolver"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="412dp"
+        android:layout_height="51dp"
+        android:background="@drawable/secundary_button"
         android:text="VOLVER"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
+        android:id="@+id/btnReclamos"
+        android:layout_width="212dp"
+        android:layout_height="43dp"
+        android:background="@drawable/third_button"
+        android:text="RECLAMOS"
+        android:textColor="#FCFFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/btnVolver"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <Button
         android:id="@+id/btnCrearRecompensa"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="176dp"
+        android:layout_height="43dp"
+        android:background="@drawable/primary_button"
         android:text="CREAR"
         app:layout_constraintBottom_toTopOf="@+id/btnVolver"
         app:layout_constraintEnd_toStartOf="@+id/btnReclamos"
@@ -36,21 +51,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <Button
-        android:id="@+id/btnReclamos"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="RECLAMOS"
-        app:layout_constraintBottom_toTopOf="@+id/btnVolver"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.46" />
 
     <TextView
         android:id="@+id/textView3"

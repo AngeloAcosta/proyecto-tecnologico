@@ -8,8 +8,9 @@
 
     <Button
         android:id="@+id/btnVolver"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="427dp"
+        android:layout_height="51dp"
+        android:background="@drawable/secundary_button"
         android:text="VOLVER"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,27 +18,13 @@
 
     <Button
         android:id="@+id/btnCrearRecompensa"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="416dp"
+        android:layout_height="54dp"
+        android:background="@drawable/primary_button"
         android:text="CREAR RECOMPENSA"
         app:layout_constraintBottom_toTopOf="@+id/btnVolver"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/txtNombreRecompensa"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="NOMBRE DE LA RECOMPENSA"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtFechaReclamo"
@@ -45,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
+        android:fontFamily="serif"
         android:text="SELECCIONE"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="18sp"
@@ -54,33 +42,12 @@
         app:layout_constraintTop_toBottomOf="@+id/txtNombreRecompensa" />
 
     <TextView
-        android:id="@+id/textView27"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:text="FECHA DE LIMITE:"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtNombreRecompensa" />
-
-    <TextView
-        android:id="@+id/textView28"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:text="PUNTOS NECESARIOS:"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView27" />
-
-    <TextView
         android:id="@+id/txtPuntosNecesarios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="serif"
         android:text="SELECCIONE"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="18sp"
@@ -88,15 +55,16 @@
         app:layout_constraintTop_toBottomOf="@+id/txtFechaReclamo" />
 
     <TextView
-        android:id="@+id/textView25"
+        android:id="@+id/textView28"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:text="GRUPO FAMILIAR:"
+        android:fontFamily="serif"
+        android:text="PUNTOS NECESARIOS:"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView28" />
+        app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
     <TextView
         android:id="@+id/textView26"
@@ -104,10 +72,39 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="serif"
         android:text="MIEMBRO:"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+    <EditText
+        android:id="@+id/txtNombreRecompensa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:hint="NOMBRE DE LA RECOMPENSA"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="serif"
+        android:text="GRUPO FAMILIAR:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
     <TextView
         android:id="@+id/txtGrupoFamiliar"
@@ -115,6 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="serif"
         android:text="SELECCIONE"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="18sp"
@@ -122,11 +120,24 @@
         app:layout_constraintTop_toBottomOf="@+id/txtPuntosNecesarios" />
 
     <TextView
+        android:id="@+id/textView27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="serif"
+        android:text="FECHA DE LIMITE:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNombreRecompensa" />
+
+    <TextView
         android:id="@+id/txtMiembro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="serif"
         android:text="SELECCIONE"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="18sp"
