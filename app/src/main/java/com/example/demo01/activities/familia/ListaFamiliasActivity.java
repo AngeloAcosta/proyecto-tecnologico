@@ -46,7 +46,6 @@ public class ListaFamiliasActivity extends AppCompatActivity {
     StorageReference storageRef;
     FirestoreRecyclerAdapter familiaAdapter;
 
-    SearchView mbuscarFamilia;
     Button mbtnCancelar;
 
 
@@ -63,7 +62,6 @@ public class ListaFamiliasActivity extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.rcvFamilias);
 
-        mbuscarFamilia = findViewById(R.id.scFamilias);
         mbtnCancelar = findViewById(R.id.btnCancelar);
 
         mbtnCancelar.setOnClickListener(new View.OnClickListener() {

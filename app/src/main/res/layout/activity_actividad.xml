@@ -39,8 +39,8 @@
 
     <Button
         android:id="@+id/btnActividadesCreadas"
-        android:layout_width="202dp"
-        android:layout_height="48dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@drawable/third_button"
         android:text="ACTIVIDADES CREADAS"
         android:textColor="#FFFFFF"
@@ -145,8 +145,8 @@
 
     <Button
         android:id="@+id/btnRecompensas"
-        android:layout_width="203dp"
-        android:layout_height="48dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@drawable/third_button"
         android:text="recompensas"
         android:textColor="#FFFFFF"

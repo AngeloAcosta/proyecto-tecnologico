@@ -70,8 +70,8 @@
 
     <Button
         android:id="@+id/btnUnirme"
-        android:layout_width="416dp"
-        android:layout_height="55dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@drawable/primary_button"
         android:fontFamily="serif"
         android:text="UNIRME"
@@ -82,8 +82,8 @@
 
     <Button
         android:id="@+id/btnCancelar"
-        android:layout_width="416dp"
-        android:layout_height="55dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@drawable/secundary_button"
         android:fontFamily="serif"
         android:text="CANCELAR"

@@ -8,8 +8,8 @@
 
     <Button
         android:id="@+id/btnVolver"
-        android:layout_width="427dp"
-        android:layout_height="51dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@drawable/secundary_button"
         android:text="VOLVER"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,8 +18,8 @@
 
     <Button
         android:id="@+id/btnCrearRecompensa"
-        android:layout_width="416dp"
-        android:layout_height="54dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@drawable/primary_button"
         android:text="CREAR RECOMPENSA"
         app:layout_constraintBottom_toTopOf="@+id/btnVolver"

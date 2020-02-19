@@ -109,10 +109,48 @@ public class FamiliarSeccionadoActivity extends AppCompatActivity implements Opc
         mRetirar.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                cargandoDialogFragment.startLoadingDialog();
                 DocumentReference grupoDeleteRef = db.collection("grupoFamiliar").document(familia.getIdFamilia());
-                grupoDeleteRef.update("miembros", FieldValue.arrayRemove(usuario.getIdUsuario()));
-                DocumentReference usuarioDeleteRef = db.collection("grupoFamiliar").document(familia.getIdFamilia());
-                usuarioDeleteRef.update("grupoFamiliar", FieldValue.arrayRemove(familia.getIdFamilia()));
+                grupoDeleteRef.update("miembros", FieldValue.arrayRemove(usuario.getIdUsuario()))
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+
+                                DocumentReference usuarioDeleteRef = db.collection("usuario").document(usuario.getIdUsuario());
+                                usuarioDeleteRef.update("grupoFamiliar", FieldValue.arrayRemove(familia.getIdFamilia()))
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                cargandoDialogFragment.dismissDialog();
+
+                                                Bundle args = new Bundle();
+
+                                                Intent intent = new Intent(FamiliarSeccionadoActivity.this, MiGrupoFamiliarActivity.class);
+
+                                                args.putSerializable("familia", familia);
+                                                intent.putExtras(args);
+                                                startActivity(intent);
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error updating document", e);
+                                                cargandoDialogFragment.dismissDialog();
+                                            }
+                                        });
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error updating document", e);
+                                cargandoDialogFragment.dismissDialog();
+                            }
+                        });
+
                 return false;
             }
         });

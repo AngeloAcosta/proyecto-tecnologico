@@ -60,8 +60,11 @@
     <Button
         android:id="@+id/btnReclamar"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="197dp"
-        android:layout_height="40dp"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/primary_button"
         android:fontFamily="serif"
         android:text="RECLAMAR"

@@ -28,6 +28,7 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="serif"
         android:text="CREA A TU FAMILIA Y EMPIEZA A AGREGAR A TUS FAMILIARES O A LOS QUE VIVEN CONTIGO"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,8 +107,8 @@
 
     <Button
         android:id="@+id/btnCrearFamilia"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@drawable/primary_button"
         android:fontFamily="serif"
         android:text="CREAR"
@@ -117,8 +118,8 @@
 
     <Button
         android:id="@+id/btnCancelar"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@drawable/secundary_button"
         android:fontFamily="serif"
         android:text="CANCELAR"
@@ -146,6 +147,7 @@
         android:layout_marginBottom="8dp"
         android:fontFamily="serif"
         android:text="INGRESA UNA CLAVE NUMERICA UNICA Y NO SE LA DIGAS A NADIE, CON ESTA CLAVE PODRAS AGREGAR A LOS DEMAS INTEGRANTES Y ES IMPORTANTE QUE SEA SECRETA."
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/txtClaveFamiliar"
         app:layout_constraintEnd_toEndOf="@+id/txtDescripcionFamilia"
         app:layout_constraintStart_toStartOf="@+id/txtDescripcionFamilia" />

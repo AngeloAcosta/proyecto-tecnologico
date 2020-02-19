@@ -40,7 +40,7 @@
 
     <Button
         android:id="@+id/btnVolver"
-        android:layout_width="394dp"
+        android:layout_width="0dp"
         android:layout_height="45dp"
         android:background="@drawable/secundary_button"
         android:text="VOLVER"
@@ -65,7 +65,7 @@
     <Button
         android:id="@+id/btnRecompensasXFamilia"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:text="RECOMPENSAS"
         app:layout_constraintBottom_toTopOf="@+id/btnVolver"
         app:layout_constraintEnd_toEndOf="parent"

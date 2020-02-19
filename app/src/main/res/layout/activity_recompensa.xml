@@ -8,8 +8,8 @@
 
     <Button
         android:id="@+id/btnVolver"
-        android:layout_width="412dp"
-        android:layout_height="51dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@drawable/secundary_button"
         android:text="VOLVER"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,8 +19,8 @@
 
     <Button
         android:id="@+id/btnReclamos"
-        android:layout_width="212dp"
-        android:layout_height="43dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@drawable/third_button"
         android:text="RECLAMOS"
         android:textColor="#FCFFFFFF"
@@ -31,8 +31,8 @@
 
     <Button
         android:id="@+id/btnCrearRecompensa"
-        android:layout_width="176dp"
-        android:layout_height="43dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@drawable/primary_button"
         android:text="CREAR"
         app:layout_constraintBottom_toTopOf="@+id/btnVolver"
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.46" />
+        app:layout_constraintGuide_percent="0.5" />
 
     <TextView
         android:id="@+id/textView3"
