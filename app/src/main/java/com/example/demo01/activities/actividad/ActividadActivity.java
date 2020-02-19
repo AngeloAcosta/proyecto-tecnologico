@@ -1,8 +1,8 @@
 package com.example.demo01.activities.actividad;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +10,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +20,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.demo01.activities.dialog.CargandoDialogFragment;
@@ -40,6 +40,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -47,8 +48,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ActividadActivity extends AppCompatActivity implements OpcioneDialogFragment.OpcioneListener{
 
@@ -71,6 +72,7 @@ public class ActividadActivity extends AppCompatActivity implements OpcioneDialo
     String dialogOpciones = "";
     String idActividad = "";
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +93,7 @@ public class ActividadActivity extends AppCompatActivity implements OpcioneDialo
         mbtnActividad = findViewById(R. id.btnActividad);
         mbtnFamilia = findViewById(R. id.btnFamilia);
         mbtnPerfil = findViewById(R. id.btnPerfil);
-        mbtnRecompensas = findViewById(R.id.btnRecompensas);
+        mbtnRecompensas = findViewById(R.id.btnHistorial);
 
         mbtnCrearActividad.setVisibility(View.INVISIBLE);
         mbtnActividadesCreadas.setVisibility(View.INVISIBLE);
@@ -110,18 +112,19 @@ public class ActividadActivity extends AppCompatActivity implements OpcioneDialo
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
                         Familia familia = document.toObject(Familia.class);
                         String creador = familia.getIdCreador();
                         if(creador.equals(uid)){
                             mbtnCrearActividad.setVisibility(View.VISIBLE);
                             mbtnActividadesCreadas.setVisibility(View.VISIBLE);
                             mbtnRecompensas.setVisibility(View.VISIBLE);
-                            cargandoDialogFragment.dismissDialog();
                         }
                     }
+                    cargandoDialogFragment.dismissDialog();
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
+                    cargandoDialogFragment.dismissDialog();
                 }
             }
         });
@@ -151,7 +154,7 @@ public class ActividadActivity extends AppCompatActivity implements OpcioneDialo
 
             @Override
             protected void onBindViewHolder(@NonNull final ActividadViewHolder actividadViewHolder, final int i, @NonNull final Actividad actividad) {
-                crearNotificacionRealizar();
+
                 actividadViewHolder.nombre_item.setText(actividad.getNombre());
                 actividadViewHolder.descripcion_item.setText(actividad.getDetalle());
                 actividadViewHolder.puntos_item.setText(String.valueOf(actividad.getPuntos()));
@@ -177,6 +180,59 @@ public class ActividadActivity extends AppCompatActivity implements OpcioneDialo
                         startActivity(intent);
                     }
                 });
+
+//                LocalDateTime myDateObj = LocalDateTime.now();
+//                DateTimeFormatter formatHoraMinuto = DateTimeFormatter.ofPattern("HH:mm");
+//                DateTimeFormatter formatDia = DateTimeFormatter.ofPattern("E");
+//                DateTimeFormatter formatNumDia = DateTimeFormatter.ofPattern("dd");
+//
+//                String formattedDateHoraMinuto = myDateObj.format(formatHoraMinuto);
+//
+                Thread t = new Thread() {
+                    @Override
+                    public void run(){
+                        try{
+                            while (!isInterrupted()){
+                                Thread.sleep(1000);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        long date = System.currentTimeMillis();
+                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                                        String dataString = sdf.format(date);
+
+                                        if(dataString.equals(actividad.getHoraInicio())){
+                                            crearNotificacionRealizar();
+                                        }
+
+                                        if(dataString.equals("00:00:00")){
+                                            if(actividad.getEstado().equals("REALIZADO")){
+                                                DocumentReference actividad1UpdateRef = db.collection("actividad").document(actividad.getIdActividad());
+                                                actividad1UpdateRef
+                                                        .update("estado", "ACTIVO")
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.w(TAG, "Error updating document", e);
+                                                            }
+                                                        });
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }catch (Exception e){
+
+                        }
+                    }
+                };
+                t.start();
             }
 
         };
@@ -216,6 +272,8 @@ public class ActividadActivity extends AppCompatActivity implements OpcioneDialo
                 finish();
             }
         });
+
+
 
     }
 

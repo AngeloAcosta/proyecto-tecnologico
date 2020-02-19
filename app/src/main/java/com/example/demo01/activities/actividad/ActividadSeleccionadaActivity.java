@@ -1,12 +1,14 @@
 package com.example.demo01.activities.actividad;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -35,7 +38,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ActividadSeleccionadaActivity extends AppCompatActivity {
@@ -44,7 +52,7 @@ public class ActividadSeleccionadaActivity extends AppCompatActivity {
     TextView mrecompensa, muriImagen,mgrupoFamiliar, midCreador, mcondicion, mestado, mfecha, mfechaInicio, mfechaFin, mhoraInicio, mhoraFin, mpuntos, mdestino, mprioridad, midActividad, mnombre, mdetalle;
     int ypuntos;
     ImageView mimgActividad;
-    Button mbtnReaizado, mbtnVolver;
+    Button mbtnReaizado, mbtnVolver, mbtnEliminar, mEditar;
 
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -55,6 +63,7 @@ public class ActividadSeleccionadaActivity extends AppCompatActivity {
     CargandoDialogFragment cargandoDialogFragment;
     Actividad actividad;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +92,39 @@ public class ActividadSeleccionadaActivity extends AppCompatActivity {
 
         mbtnReaizado = findViewById(R.id.btnRealizado);
         mbtnVolver = findViewById(R.id.btnVolver);
+        mEditar = findViewById(R.id.btnEditarActividad);
+        mbtnEliminar = findViewById(R.id.btnEliminarActividad);
+
+        mEditar.setVisibility(View.INVISIBLE);
+        mbtnEliminar.setVisibility(View.INVISIBLE);
+
+        mbtnEliminar.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                cargandoDialogFragment.startLoadingDialog();
+                db.collection("actividad").document(actividad.getIdActividad())
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @SuppressLint("LongLogTag")
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                cargandoDialogFragment.dismissDialog();
+                                startActivity(new Intent(ActividadSeleccionadaActivity.this, ActividadActivity.class));
+                                finish();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @SuppressLint("LongLogTag")
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error deleting document", e);
+                                cargandoDialogFragment.dismissDialog();
+                            }
+                        });
+                return false;
+            }
+        });
 
         Bundle args = getIntent().getExtras();
         assert args != null;
@@ -98,6 +140,24 @@ public class ActividadSeleccionadaActivity extends AppCompatActivity {
         mpuntos.setText(String.valueOf(actividad.getPuntos()));
         mprioridad.setText(actividad.getPrioridad());
 
+        mEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                Intent intent = new Intent(ActividadSeleccionadaActivity.this, NuevaActividadActivity.class);
+
+                args.putSerializable("actividadEditar", actividad);
+                intent.putExtras(args);
+                startActivity(intent);
+            }
+        });
+
+        if(uid.equals(actividad.getIdCreador())) {
+            mEditar.setVisibility(View.VISIBLE);
+            mbtnEliminar.setVisibility(View.VISIBLE);
+            cargandoDialogFragment.dismissDialog();
+        }
+
         storageRef.child("actividad/" + actividad.getIdActividad() + "/imagen.jpg")
                 .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -109,6 +169,8 @@ public class ActividadSeleccionadaActivity extends AppCompatActivity {
 
         if(actividad.getEstado().equals("REALIZADO")){
             mbtnReaizado.setEnabled(false);
+            mbtnReaizado.setText("YA COMPLETASTE ESTA ACTIVIDAD");
+
         }
 
         mbtnReaizado.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +195,8 @@ public class ActividadSeleccionadaActivity extends AppCompatActivity {
                                                 mbtnReaizado.setEnabled(false);
                                                 cargandoDialogFragment.dismissDialog();
                                                 Toast.makeText(ActividadSeleccionadaActivity.this, "Acabas de ganar "+actividad.getPuntos(), Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(ActividadSeleccionadaActivity.this, ActividadActivity.class));
+                                                finish();
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {

@@ -246,22 +246,23 @@ public class CrearRecompensaActivity extends AppCompatActivity implements Puntos
                 cargandoDialogFragment.startLoadingDialog();
                 DocumentReference recompensaRef = db.collection("recompensa").document();
 
+                String nombre = mnombreRecompensa.getText().toString();
+                String fecha = mfechaReclamo.getText().toString();
+                String grupo = mgrupoFamiliar.getText().toString();
+                String miembro = mmiembro.getText().toString();
+
                 Map<String, Object> data = new HashMap<>();
-                data.put("nombre",mnombreRecompensa.getText().toString());
-                data.put("fechaReclamo",mfechaReclamo.getText().toString());
+                data.put("nombre",nombre);
+                data.put("fechaReclamo",fecha);
                 data.put("idRecompensa",recompensaRef.getId());
                 data.put("idUsuario",idDestino);
                 data.put("fechaLimite",mfechaReclamo.getText().toString());
                 data.put("estado","ACTIVO");
                 data.put("idCreador",uid);
-                data.put("idGrupo",mgrupoFamiliar.getText().toString());
+                data.put("idGrupo",idGrupo);
                 data.put("puntosNecesarios",puntos);
 
-                if(mnombreRecompensa.getText().toString().isEmpty() &&
-                        mpuntosNecesarios.getText().toString().isEmpty() &&
-                        mfechaReclamo.getText().toString().isEmpty() &&
-                        mgrupoFamiliar.getText().toString().isEmpty() &&
-                        mmiembro.getText().toString().isEmpty()){
+                if(puntos != 0 && !grupo.equals("SELECCIONE") && !miembro.equals("SELECCIONAR") && !fecha.equals("SELECCIONE")){
                     recompensaRef.set(data)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -281,6 +282,7 @@ public class CrearRecompensaActivity extends AppCompatActivity implements Puntos
                             });
                 } else {
                     Toast.makeText(CrearRecompensaActivity.this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
+                    cargandoDialogFragment.dismissDialog();
                 }
             }
         });

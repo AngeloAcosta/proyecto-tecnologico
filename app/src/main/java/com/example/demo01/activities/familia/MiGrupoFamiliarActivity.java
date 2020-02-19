@@ -21,6 +21,7 @@ import com.example.demo01.R;
 import com.example.demo01.activities.models.Familia;
 import com.example.demo01.activities.models.Miembro;
 import com.example.demo01.activities.models.Usuario;
+import com.example.demo01.activities.recompensa.RecompensaActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,7 +47,7 @@ public class MiGrupoFamiliarActivity extends AppCompatActivity {
     TextView mnombrefamilia, mdescripcion;
     ImageView mFamilia;
     RecyclerView mFamiliares;
-    Button mvolver;
+    Button mvolver, mbtnRecompensasXFamilia;
 
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -57,6 +58,8 @@ public class MiGrupoFamiliarActivity extends AppCompatActivity {
 
     ArrayList<Miembro> miembros;
     ArrayList<Usuario> usuarios;
+
+    Familia familia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +76,9 @@ public class MiGrupoFamiliarActivity extends AppCompatActivity {
         mdescripcion = findViewById(R.id.txtDescripcion);
         mFamilia = findViewById(R.id.imgFamilia);
         mFamiliares = findViewById(R.id.rcvFamiliares);
+
         mvolver = findViewById(R.id.btnVolver);
+        mbtnRecompensasXFamilia = findViewById(R.id.btnRecompensasXFamilia);
 
         mvolver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,10 +89,24 @@ public class MiGrupoFamiliarActivity extends AppCompatActivity {
 
         Bundle args = getIntent().getExtras();
         assert args != null;
-        Familia familia = (Familia) args.getSerializable("familia");
+        familia = (Familia) args.getSerializable("familia");
         assert familia != null;
         mnombrefamilia.setText(familia.getNombre());
         mdescripcion.setText(familia.getDescripcion());
+
+        mbtnRecompensasXFamilia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle args = new Bundle();
+
+                Intent intent = new Intent(MiGrupoFamiliarActivity.this, RecompensaActivity.class);
+
+                args.putSerializable("familia", familia);
+                intent.putExtras(args);
+                startActivity(intent);
+            }
+        });
 
         storageRef.child("grupofamiliar/"+familia.getIdFamilia()+"/portada.jpg")
                 .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -166,9 +185,10 @@ public class MiGrupoFamiliarActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         Bundle args = new Bundle();
 
-                        Intent intent = new Intent(MiGrupoFamiliarActivity.this, FamiliaSeccionadaActivity.class);
+                        Intent intent = new Intent(MiGrupoFamiliarActivity.this, FamiliarSeccionadoActivity.class);
 
-                        args.putSerializable("familia", usuario);
+                        args.putSerializable("usuarioSelecto", usuario);
+                        args.putSerializable("grupoSelecto", familia);
                         intent.putExtras(args);
                         startActivity(intent);
                     }

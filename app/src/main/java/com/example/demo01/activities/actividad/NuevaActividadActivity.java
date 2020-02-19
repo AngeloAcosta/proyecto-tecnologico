@@ -29,11 +29,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.demo01.R;
 import com.example.demo01.activities.dialog.CargandoDialogFragment;
 import com.example.demo01.activities.dialog.GrupoDialogFrangment;
 import com.example.demo01.activities.dialog.PrioridadDialogFragment;
 import com.example.demo01.activities.dialog.PuntosDialogFragment;
+import com.example.demo01.activities.models.Actividad;
 import com.example.demo01.activities.models.Familia;
 import com.example.demo01.activities.models.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -59,6 +61,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TimeZone;
 
 public class NuevaActividadActivity extends AppCompatActivity implements PuntosDialogFragment.PuntosListener, PrioridadDialogFragment.PrioridadListener, GrupoDialogFrangment.GrupoListener {
 
@@ -81,11 +84,13 @@ public class NuevaActividadActivity extends AppCompatActivity implements PuntosD
     private DatePickerDialog.OnDateSetListener mDateSetListenerInicio, mDateSetListenerFin;
     private TimePickerDialog.OnTimeSetListener mDateSetListenerHoraInicio, mDateSetListenerHoraFin;
 
+    CargandoDialogFragment cargandoDialogFragment;
+    Actividad actividadeditar;
+
     static final int PICK_IMAGE_REQUEST = 1;
     Uri filePath;
 
     String nombre = "";
-    String actividad = "";
     String recompensa = "";
     String detalle = "";
     String uriImagen = "";
@@ -101,6 +106,7 @@ public class NuevaActividadActivity extends AppCompatActivity implements PuntosD
     String horaInicio = "";
     String horaFin = "";
     String nombredestino = "";
+    String uidActividad = "";
 
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -224,6 +230,7 @@ public class NuevaActividadActivity extends AppCompatActivity implements PuntosD
             }
         });
 
+
         final ArrayAdapter<String> adapterMiembro = new ArrayAdapter<String>(NuevaActividadActivity.this,android.R.layout.simple_list_item_1, nombreMiembros);
         listViewNombreMiembro.setAdapter(adapterMiembro);
 
@@ -273,7 +280,7 @@ public class NuevaActividadActivity extends AppCompatActivity implements PuntosD
         mhoraInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
+                Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("America/Lima"));
                 int hora = cal.get(Calendar.HOUR_OF_DAY);
                 int minuto = cal.get(Calendar.MINUTE);
 
@@ -337,16 +344,32 @@ public class NuevaActividadActivity extends AppCompatActivity implements PuntosD
         mDateSetListenerHoraInicio = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                final String horaInicio = hourOfDay + ":" + minute;
-                mhoraInicio.setText(horaInicio);
+                if(minute == 0){
+                    String horaInicio = hourOfDay + ":" + "00" + ":00";
+                    mhoraInicio.setText(horaInicio);
+                } else if(minute == 1 ||minute == 2 || minute == 3 ||minute == 4 || minute == 5 ||minute == 6 || minute == 7 ||minute == 8 || minute == 9) {
+                    String horaInicio = hourOfDay + ":" + "0"+ minute + ":00";
+                    mhoraInicio.setText(horaInicio);
+                } else {
+                    String horaInicio = hourOfDay + ":" + minute + ":00";
+                    mhoraInicio.setText(horaInicio);
+                }
             }
         };
 
         mDateSetListenerHoraFin = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                final String horaFin = hourOfDay + ":" + minute;
-                mhoraFin.setText(horaFin);
+                if(minute == 0){
+                    String horaFin = hourOfDay + ":" + "00" + ":00";
+                    mhoraFin.setText(horaFin);
+                } else if(minute == 1 ||minute == 2 || minute == 3 ||minute == 4 || minute == 5 ||minute == 6 || minute == 7 ||minute == 8 || minute == 9) {
+                    String horaFin = hourOfDay + ":" + "0"+ minute + ":00";
+                    mhoraFin.setText(horaFin);
+                } else {
+                    String horaFin = hourOfDay + ":" + minute + ":00";
+                    mhoraFin.setText(horaFin);
+                }
             }
         };
 
@@ -389,7 +412,8 @@ public class NuevaActividadActivity extends AppCompatActivity implements PuntosD
                 cargandoDialogFragment.startLoadingDialog();
                 final String uid = user.getUid();
                 final DocumentReference actividadRef = db.collection("actividad").document();
-                final String uidActividad = actividadRef.getId();
+
+                uidActividad = actividadRef.getId();
                 //REFERENCIA DE ALMACENAMIENTO
                 final StorageReference imagenRef = storageRef.child("actividad/"+uidActividad+"/imagen.jpg");
 
@@ -419,6 +443,7 @@ public class NuevaActividadActivity extends AppCompatActivity implements PuntosD
                             horaInicio = mhoraInicio.getText().toString();
                             horaFin = mhoraFin.getText().toString();
                             detalle = mdetalle.getText().toString();
+                            nombredestino = mdestino.getText().toString();
 
                             if(!nombre.isEmpty() && !detalle.isEmpty()) {
 
@@ -439,24 +464,48 @@ public class NuevaActividadActivity extends AppCompatActivity implements PuntosD
                                 data.put("puntos", puntos);
                                 data.put("prioridad",prioridad);
 
-                                actividadRef.set(data)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                startActivity(new Intent(NuevaActividadActivity.this, ActividadActivity.class));
-                                                finish();
-                                                Toast.makeText(NuevaActividadActivity.this, "Actividad creada!!", Toast.LENGTH_SHORT).show();
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.w(TAG, "Error adding document", e);
-                                                setAllEnableTrue();
-                                                cargandoDialogFragment.dismissDialog();
-                                                Toast.makeText(NuevaActividadActivity.this, "No se pudo crear la actividad", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
+                                if(mbtnCrear.getText().equals("ACTUALIZAR")){
+
+                                    DocumentReference actividadUpdateRef = db.collection("actividad").document(uidActividad);
+                                    actividadUpdateRef.update(data)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    startActivity(new Intent(NuevaActividadActivity.this, ActividadActivity.class));
+                                                    finish();
+                                                    Toast.makeText(NuevaActividadActivity.this, "Actividad actualizada!!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error adding document", e);
+                                                    setAllEnableTrue();
+                                                    cargandoDialogFragment.dismissDialog();
+                                                    Toast.makeText(NuevaActividadActivity.this, "No se pudo actualizar la actividad", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                } else {
+                                    actividadRef.set(data)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    startActivity(new Intent(NuevaActividadActivity.this, ActividadActivity.class));
+                                                    finish();
+                                                    Toast.makeText(NuevaActividadActivity.this, "Actividad creada!!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error adding document", e);
+                                                    setAllEnableTrue();
+                                                    cargandoDialogFragment.dismissDialog();
+                                                    Toast.makeText(NuevaActividadActivity.this, "No se pudo crear la actividad", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+
                             } else {
                                 Toast.makeText(NuevaActividadActivity.this, ""+mimgActivdad, Toast.LENGTH_SHORT).show();
                                 setAllEnableTrue();
@@ -474,6 +523,57 @@ public class NuevaActividadActivity extends AppCompatActivity implements PuntosD
 
             }
         });
+
+        Bundle args = getIntent().getExtras();
+        if(args != null){
+            actividadeditar = (Actividad) args.getSerializable("actividadEditar");
+        }
+        if(actividadeditar != null){
+            mnombre.setText(actividadeditar.getNombre());
+            mfechaInicio.setText(actividadeditar.getFechaInicio());
+            mfechaFin.setText(actividadeditar.getFechaFin());
+            mhoraInicio.setText(actividadeditar.getHoraInicio());
+            mhoraFin.setText(actividadeditar.getHoraFin());
+            mdetalle.setText(actividadeditar.getDetalle());
+            mcondicion.setText(actividadeditar.getCondicion());
+            mpuntos.setText(""+actividadeditar.getPuntos());
+            mprioridad.setText(actividadeditar.getPrioridad());
+
+            uidActividad = actividadeditar.getIdActividad();
+
+            idGrupo = actividadeditar.getIdGrupoFamiliar();
+            for (int i = 0;i<idGrupos.size();i++){
+                String id = idGrupos.get(i);
+                if(idGrupo.equals(id)){
+                    mgrupoFamiliar.setText(nombreGrupos.get(i));
+                    Toast.makeText(this, ""+mgrupoFamiliar.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            idDestino = actividadeditar.getIdDestino();
+            for (int i = 0;i<idMiembros.size();i++){
+                String id = idMiembros.get(i);
+                if(idDestino.equals(id)){
+                    mdestino.setText(nombreMiembros.get(i));
+                    Toast.makeText(this, ""+mdestino.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            storageRef.child("actividad/"+actividadeditar.getIdActividad()+"/imagen.jpg")
+                    .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(NuevaActividadActivity.this).load(uri).into(mimgActivdad);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(NuevaActividadActivity.this, "No se pudo cargar la foto de la actividad", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            mbtnCrear.setText("ACTUALIZAR");
+        }
 
     }
 

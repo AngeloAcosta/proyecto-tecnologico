@@ -9,8 +9,17 @@ public class Usuario implements Serializable {
 
     private String idUsuario, nombres, apellidoPaterno, apellidoMaterno,nacimiento,uriImagen, email, clave;
     private List<String> grupoFamiliar;
+    private int puntos;
 
     public Usuario() {
+    }
+
+    public int getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
     }
 
     public List<String> getGrupoFamiliar() {

@@ -7,31 +7,48 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.demo01.R;
 import com.example.demo01.activities.actividad.ActividadActivity;
+import com.example.demo01.activities.dialog.CargandoDialogFragment;
+import com.example.demo01.activities.models.Familia;
 import com.example.demo01.activities.models.Recompensa;
+import com.example.demo01.activities.models.Usuario;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+import javax.annotation.Nullable;
+
 public class RecompensaActivity extends AppCompatActivity {
 
     RecyclerView rv;
-    TextView mpuntos;
+    TextView mTotalPuntos;
     Button mbtnReclamos, mbtnCrear, mbtnVolver;
 
     FirebaseAuth mAuth;
@@ -40,9 +57,16 @@ public class RecompensaActivity extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageRef;
 
+    CollectionReference actividadRef;
+    Query queryDestino;
+
     ArrayList<Recompensa> recompensas;
 
     FirestoreRecyclerAdapter recompensaAdapter;
+    CargandoDialogFragment cargandoDialogFragment;
+
+    Familia familia;
+    String uidFamilia = "";
 
     final static String TAG = "RecompensaActivity";
 
@@ -57,30 +81,76 @@ public class RecompensaActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
 
+        cargandoDialogFragment = new CargandoDialogFragment(RecompensaActivity.this);
+        cargandoDialogFragment.startLoadingDialog();
+
+        mTotalPuntos = findViewById(R.id.txtTotalPuntos);
+
         mbtnCrear = findViewById(R.id.btnCrearRecompensa);
-        mpuntos = findViewById(R.id.txtPuntosRecompaensa);
         mbtnReclamos = findViewById(R.id.btnReclamos);
 
+        mbtnCrear.setVisibility(View.INVISIBLE);
+        mbtnReclamos.setVisibility(View.INVISIBLE);
+
         mbtnVolver = findViewById(R.id.btnVolver);
+
+        final String uid = user.getUid();
+
+        DocumentReference docRef = db.collection("usuario").document(uid);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+                    Usuario usuario = snapshot.toObject(Usuario.class);
+                    mTotalPuntos.setText(usuario.getPuntos()+"");
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+        });
 
         rv = findViewById(R. id.rvRecompensa);
         rv.setLayoutManager(new LinearLayoutManager(RecompensaActivity.this));
 
         recompensas = new ArrayList<>();
-        final String uid = user.getUid();
 
-        CollectionReference actividadRef = db.collection("recompensa");
-        Query queryDestino = actividadRef.whereEqualTo("idCreador",uid);
+        Bundle args = getIntent().getExtras();
+        if(args != null){
+            familia = (Familia) args.getSerializable("familia");
+        }
+        if(familia != null){
+            uidFamilia = familia.getIdFamilia();
+        }
+
+        actividadRef = db.collection("recompensa");
+
+        if (uidFamilia.isEmpty() == false){
+            queryDestino = actividadRef.whereEqualTo("idGrupo",uidFamilia);
+        }
+
+        if (uidFamilia.isEmpty() == true) {
+            queryDestino = actividadRef.whereEqualTo("idCreador",uid);
+            mbtnCrear.setVisibility(View.VISIBLE);
+            mbtnReclamos.setVisibility(View.VISIBLE);
+        }
+
 
         final FirestoreRecyclerOptions<Recompensa> recompensaOptionsDestino = new FirestoreRecyclerOptions.Builder<Recompensa>()
                 .setQuery(queryDestino, Recompensa.class)
                 .build();
-
         recompensaAdapter = new FirestoreRecyclerAdapter<Recompensa, RecompensaViewHolder>(recompensaOptionsDestino) {
             @NonNull
             @Override
             public RecompensaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_recompensa_item, parent, false);
+
                 return new RecompensaViewHolder(view);
             }
 
@@ -90,6 +160,47 @@ public class RecompensaActivity extends AppCompatActivity {
                 recompensaViewHolder.nombre_item.setText(recompensa.getNombre());
                 recompensaViewHolder.fecha_item.setText(recompensa.getFechaReclamo());
                 recompensaViewHolder.puntos_item.setText(String.valueOf(recompensa.getPuntosNecesarios()));
+                recompensaViewHolder.reclamar_item.setEnabled(false);
+
+                final int misPuntos = Integer.parseInt(mTotalPuntos.getText().toString());
+
+                if(misPuntos >= recompensa.getPuntosNecesarios()){
+                    recompensaViewHolder.reclamar_item.setEnabled(true);
+                    recompensaViewHolder.reclamar_item.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                                int totalRestante = misPuntos - recompensa.getPuntosNecesarios();
+                                DocumentReference usuarioPuntosRef = db.collection("usuario").document(uid);
+                                usuarioPuntosRef.update("puntos", totalRestante);
+                                Toast.makeText(RecompensaActivity.this, "Felicidades", Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
+                    });
+                } else {
+                    recompensaViewHolder.reclamar_item.setText("AUN NO");
+                }
+
+                recompensaViewHolder.reclamar_item.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+
+                        recompensaViewHolder.reclamar_item.setEnabled(false);
+
+                        int misPuntos = Integer.parseInt(mTotalPuntos.getText().toString());
+
+                        if(misPuntos >= recompensa.getPuntosNecesarios()){
+                            int totalRestante = misPuntos - recompensa.getPuntosNecesarios();
+                            DocumentReference usuarioPuntosRef = db.collection("usuario").document(uid);
+
+                            usuarioPuntosRef.update("puntos", totalRestante);
+                            recompensaViewHolder.reclamar_item.setEnabled(true);
+
+                            Toast.makeText(RecompensaActivity.this, "Felicidades", Toast.LENGTH_SHORT).show();
+                        }
+
+                        return false;
+                    }
+                });
             }
 
         };
@@ -119,6 +230,7 @@ public class RecompensaActivity extends AppCompatActivity {
     private class RecompensaViewHolder extends RecyclerView.ViewHolder{
 
         private TextView nombre_item, fecha_item, puntos_item;
+        private Button reclamar_item;
 
         RecompensaViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -126,6 +238,7 @@ public class RecompensaActivity extends AppCompatActivity {
             nombre_item = itemView.findViewById(R.id.txtNombrereclamo);
             fecha_item = itemView.findViewById(R.id.txtFechaReclamo);
             puntos_item = itemView.findViewById(R.id.txtPuntosRecompaensa);
+            reclamar_item = itemView.findViewById(R.id.btnReclamar);
 
         }
 
@@ -141,5 +254,6 @@ public class RecompensaActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         recompensaAdapter.startListening();
+        cargandoDialogFragment.dismissDialog();
     }
 }
