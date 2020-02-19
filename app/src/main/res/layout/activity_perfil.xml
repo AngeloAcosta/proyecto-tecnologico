@@ -116,10 +116,8 @@
 
     <Button
         android:id="@+id/btnCerrarSesion"
-        android:layout_width="106dp"
+        android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/primary_button"
         android:fontFamily="serif"
         android:text="cerrar sesion"
@@ -166,14 +164,13 @@
 
     <Button
         android:id="@+id/btnEditarPerfil"
-        android:layout_width="393dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@drawable/primary_button"
         android:fontFamily="serif"
         android:text="EDITAR PERFIL"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView

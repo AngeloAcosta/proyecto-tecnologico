@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -131,6 +132,11 @@ public class ActividadSeleccionadaActivity extends AppCompatActivity {
         actividad = (Actividad) args.getSerializable("actividad");
         assert actividad != null;
 
+        mbtnReaizado.setVisibility(View.INVISIBLE);
+        if(actividad.getIdDestino().equals(uid)){
+            mbtnReaizado.setVisibility(View.VISIBLE);
+        }
+
         mnombre.setText(actividad.getNombre());
         mdetalle.setText(actividad.getDetalle());
         mfechaInicio.setText(actividad.getFechaInicio());
@@ -216,6 +222,29 @@ public class ActividadSeleccionadaActivity extends AppCompatActivity {
                                 cargandoDialogFragment.dismissDialog();
                             }
                         });
+
+                Actividad actividadRealizado = new Actividad(
+                        actividad.getDestino(),
+                        actividad.getIdActividad(),
+                        actividad.getNombre(),
+                        actividad.getDetalle(),
+                        "AUNNINGUNA",
+                        actividad.getUriImagen(),
+                        actividad.getIdGrupoFamiliar(),
+                        actividad.getIdCreador(),
+                        "CUMPLIDO",
+                        actividad.getEstado(),
+                        actividad.getIdDestino(),
+                        actividad.getPrioridad(),
+                        actividad.getFechaInicio(),
+                        actividad.getFechaFin(),
+                        actividad.getHoraInicio(),
+                        actividad.getHoraFin(),
+                        actividad.getFecha(),
+                        actividad.getPuntos());
+
+                DocumentReference docRef = db.collection("realizadas").document();
+                        docRef.set(actividadRealizado);
             }
         });
 

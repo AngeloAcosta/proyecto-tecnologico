@@ -15,6 +15,27 @@ public class Actividad implements Serializable {
     public Actividad() {
     }
 
+    public Actividad(String destino, String idActividad, String nombre, String detalle, String recompensa, String uriImagen, String idGrupoFamiliar, String idCreador, String condicion, String estado, String idDestino, String prioridad, String fechaInicio, String fechaFin, String horaInicio, String horaFin, Date fecha, int puntos) {
+        this.destino = destino;
+        this.idActividad = idActividad;
+        this.nombre = nombre;
+        this.detalle = detalle;
+        this.recompensa = recompensa;
+        this.uriImagen = uriImagen;
+        this.idGrupoFamiliar = idGrupoFamiliar;
+        this.idCreador = idCreador;
+        this.condicion = condicion;
+        this.estado = estado;
+        this.idDestino = idDestino;
+        this.prioridad = prioridad;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+        this.fecha = fecha;
+        this.puntos = puntos;
+    }
+
     public String getDestino() {
         return destino;
     }

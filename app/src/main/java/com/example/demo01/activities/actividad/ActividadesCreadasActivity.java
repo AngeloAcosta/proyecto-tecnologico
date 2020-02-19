@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.demo01.R;
 import com.example.demo01.activities.models.Actividad;
+import com.example.demo01.activities.models.Familia;
+import com.example.demo01.activities.models.Usuario;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,6 +50,11 @@ public class ActividadesCreadasActivity extends AppCompatActivity {
 
     final static String TAG = "ActividadesCreadasActivity";
 
+    Usuario usuario;
+    Familia familia;
+    CollectionReference actividadRef;
+    Query queryDestino;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +74,18 @@ public class ActividadesCreadasActivity extends AppCompatActivity {
 
         final String uid = user.getUid();
 
-        CollectionReference actividadRef = db.collection("actividad");
-        Query queryDestino = actividadRef.whereEqualTo("idCreador",uid);
+        Bundle args = getIntent().getExtras();
+        if(args != null){
+            usuario = (Usuario) args.getSerializable("usuarioSelecto");
+            familia = (Familia) args.getSerializable("grupoSelecto");
+        }
+        if(usuario != null && familia != null){
+            actividadRef = db.collection("realizadas");
+            queryDestino = actividadRef.whereEqualTo("idDestino",usuario.getIdUsuario());
+        } else {
+            actividadRef = db.collection("actividad");
+            queryDestino = actividadRef.whereEqualTo("idCreador",uid);
+        }
 
         final FirestoreRecyclerOptions<Actividad> actividadOptionsCreador = new FirestoreRecyclerOptions.Builder<Actividad>()
                 .setQuery(queryDestino, Actividad.class)

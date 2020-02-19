@@ -93,7 +93,7 @@ public class ActividadActivity extends AppCompatActivity implements OpcioneDialo
         mbtnActividad = findViewById(R. id.btnActividad);
         mbtnFamilia = findViewById(R. id.btnFamilia);
         mbtnPerfil = findViewById(R. id.btnPerfil);
-        mbtnRecompensas = findViewById(R.id.btnHistorial);
+        mbtnRecompensas = findViewById(R.id.btnRecompensas);
 
         mbtnCrearActividad.setVisibility(View.INVISIBLE);
         mbtnActividadesCreadas.setVisibility(View.INVISIBLE);

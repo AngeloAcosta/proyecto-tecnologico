@@ -12,7 +12,7 @@
         android:layout_height="150dp"
         android:adjustViewBounds="false"
         android:background="@drawable/banner_newfamily"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -70,4 +70,15 @@
         app:layout_constraintBottom_toTopOf="@+id/btnVolver"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtNombreFamilia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgFamilia"
+        app:layout_constraintEnd_toEndOf="@+id/imgFamilia"
+        app:layout_constraintStart_toStartOf="@+id/imgFamilia"
+        app:layout_constraintTop_toTopOf="@+id/imgFamilia" />
 </androidx.constraintlayout.widget.ConstraintLayout>

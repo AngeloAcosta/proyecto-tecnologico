@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.demo01.R;
 import com.example.demo01.activities.actividad.ActividadActivity;
+import com.example.demo01.activities.actividad.ActividadesCreadasActivity;
 import com.example.demo01.activities.dialog.CargandoDialogFragment;
 import com.example.demo01.activities.dialog.OpcioneDialogFragment;
 import com.example.demo01.activities.models.Actividad;
@@ -92,12 +93,18 @@ public class FamiliarSeccionadoActivity extends AppCompatActivity implements Opc
         mRetirar = findViewById(R.id.btnRetirar);
         mHistorial = findViewById(R.id.btnHistorial);
 
+        mRetirar.setVisibility(View.INVISIBLE);
+
         Bundle args = getIntent().getExtras();
         assert args != null;
         final Usuario usuario = (Usuario) args.getSerializable("usuarioSelecto");
         final Familia familia = (Familia) args.getSerializable("grupoSelecto");
         assert usuario != null;
         assert familia != null;
+
+        if(familia.getIdCreador().equals(uid)){
+            mRetirar.setVisibility(View.VISIBLE);
+        }
 
         mRetirar.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -113,8 +120,14 @@ public class FamiliarSeccionadoActivity extends AppCompatActivity implements Opc
         mHistorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(FamiliarSeccionadoActivity.this, RecompensaActivity.class));
-                finish();
+                Bundle args = new Bundle();
+
+                Intent intent = new Intent(FamiliarSeccionadoActivity.this, ActividadesCreadasActivity.class);
+
+                args.putSerializable("grupoSelecto", familia);
+                args.putSerializable("usuarioSelecto", usuario);
+                intent.putExtras(args);
+                startActivity(intent);
             }
         });
 
